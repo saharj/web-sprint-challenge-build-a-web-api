@@ -30,6 +30,28 @@ Router.post("/", validateProject, (req, res) => {
     });
 });
 
+Router.delete("/:id", validateId, (req, res) => {
+  const { id } = req.params;
+  ProjectDb.remove(id)
+    .then((resp) => {
+      res.status(200).json({ message: "Project is removed successfully." });
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "Error removing the project" });
+    });
+});
+
+Router.put("/:id", [validateId, validateProject], (req, res) => {
+  const { id } = req.params;
+  ProjectDb.update(id, req.body)
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "Error updating the action" });
+    });
+});
+
 function validateId(req, res, next) {
   const { id } = req.params;
 
