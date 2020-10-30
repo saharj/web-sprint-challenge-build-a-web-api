@@ -20,6 +20,17 @@ Router.get("/:id", validateId, (req, res) => {
   res.status(200).json(req.proj);
 });
 
+Router.get("/:id/actions", (req, res) => {
+  const { id } = req.params;
+  ProjectDb.getProjectActions(id)
+    .then((resp) => {
+      res.status(200).json(resp);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "Error finding the actions" });
+    });
+});
+
 Router.post("/", validateProject, (req, res) => {
   ProjectDb.insert(req.body)
     .then((resp) => {
